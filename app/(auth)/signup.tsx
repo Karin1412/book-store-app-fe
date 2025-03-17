@@ -66,7 +66,6 @@ export default function SignUpScreen() {
   );
 }
 
-// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -23,10 +23,8 @@ export default function SignInScreen() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        {/* Ảnh login */}
         <Image source={require('../../assets/images/login.png')} style={styles.image} />
 
-        {/* Input Phone/Email */}
         <TextInput
           style={styles.input}
           placeholder="Phone number or email"
@@ -35,7 +33,6 @@ export default function SignInScreen() {
           onChangeText={setEmail}
         />
 
-        {/* Input Password */}
         <TextInput
           style={styles.input}
           placeholder="Password"
@@ -45,12 +42,10 @@ export default function SignInScreen() {
           onChangeText={setPassword}
         />
 
-        {/* Nút Sign In */}
         <TouchableOpacity style={styles.signInButton} onPress={() => router.replace('/')}>
           <Text style={styles.signInText}>Sign In</Text>
         </TouchableOpacity>
 
-        {/* Dòng Sign Up */}
         <View style={styles.signupContainer}>
           <Text style={styles.text}>Do not have an account? </Text>
           <TouchableOpacity onPress={() => router.push('/signup')}>
@@ -58,12 +53,10 @@ export default function SignInScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Forgot Password */}
         <TouchableOpacity onPress={() => setForgotPasswordVisible(true)}>
           <Text style={styles.forgotPassword}>Forgot password?</Text>
         </TouchableOpacity>
 
-        {/* Popup Forgot Password */}
         <Modal
           transparent
           visible={forgotPasswordVisible}
