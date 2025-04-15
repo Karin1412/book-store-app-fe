@@ -11,8 +11,11 @@ import { useColorScheme } from "react-native";
 export default function AdminLayout() {
   const { user } = useAuth();
   const theme = useColorScheme() ?? "light";
+  const tabIconDefault = useThemeColor({}, "tabIconDefault");
+  const tabIconSelected = useThemeColor({}, "tabIconSelected");
   const tintColor = useThemeColor({}, "tint");
   const backgroundColor = useThemeColor({}, "background");
+  const borderColor = useThemeColor({}, "border");
   return (
     <>
       <StatusBar
@@ -36,8 +39,8 @@ export default function AdminLayout() {
 
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: "#708cff",
-          tabBarInactiveTintColor: tintColor,
+          tabBarActiveTintColor: tabIconSelected,
+          tabBarInactiveTintColor: tabIconDefault,
           tabBarStyle: {
             backgroundColor,
           },
@@ -54,7 +57,13 @@ export default function AdminLayout() {
             headerTitle: `Welcome back, ${user?.name}!!`,
           }}
         />
-        <Tabs.Screen name="product" options={{ tabBarLabel: "Product" }} />
+        <Tabs.Screen
+          name="product"
+          options={{
+            tabBarLabel: "Product",
+            headerTitle: "Product management",
+          }}
+        />
         <Tabs.Screen name="cart" options={{ tabBarLabel: "Cart" }} />
         <Tabs.Screen name="profile" options={{ tabBarLabel: "Profile" }} />
       </Tabs>

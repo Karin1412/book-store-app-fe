@@ -81,7 +81,7 @@ const DonutChart = ({
   }
 
   const titleXPosition = getCenteredTextX(title, smallFont, radius);
-  const titleYPosition = getCenteredTextY(title, smallFont, radius - 15);
+  const titleYPosition = getCenteredTextY(title, smallFont, radius - 24);
   const totalValueYPosition = getCenteredTextY(
     targetText.get(),
     font,

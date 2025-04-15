@@ -2,12 +2,11 @@ import { generateDonutChartData } from "@/components/common/donut-chart/donut-ch
 import GridView from "@/components/common/grid/grid-view";
 import ChartSection from "@/components/features/admin/home/chart-section";
 import ReportCard from "@/components/features/admin/home/report-card";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemedView } from "@/components/ThemedView";
 import { showSuccessMessage } from "@/libs/react-native-toast-message/toast";
 import React from "react";
-import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 export default function AdminHomeScreen() {
-  const backgroundColor = useThemeColor({}, "background");
   const [donutChartData, setDonutChartData] = React.useState(
     generateDonutChartData(4)
   );
@@ -20,18 +19,8 @@ export default function AdminHomeScreen() {
     showSuccessMessage("Order card pressed!");
   };
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor,
-    },
-    scrollView: {
-      paddingHorizontal: 16,
-    },
-  });
-
   return (
-    <SafeAreaView style={styles.container}>
+    <ThemedView style={styles.container}>
       <ScrollView
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
@@ -73,6 +62,15 @@ export default function AdminHomeScreen() {
           style={{ marginBottom: 16 }}
         />
       </ScrollView>
-    </SafeAreaView>
+    </ThemedView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  scrollView: {
+    paddingHorizontal: 16,
+  },
+});
