@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,21 +9,40 @@ import {
   Modal,
   Pressable,
   Keyboard,
-  TouchableWithoutFeedback
-} from 'react-native';
-import { useRouter } from 'expo-router';
+  TouchableWithoutFeedback,
+} from "react-native";
+import { useRouter } from "expo-router";
+import { useAuth } from "@/hooks/useAuth";
+import { Role, User } from "@/types/user";
 
 export default function SignInScreen() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { login } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [forgotPasswordVisible, setForgotPasswordVisible] = useState(false);
-  const [recoveryEmail, setRecoveryEmail] = useState('');
+  const [recoveryEmail, setRecoveryEmail] = useState("");
+
+  const handleLogin = () => {
+    const user: User = {
+      id: "1",
+      name: "John Doe",
+      email: email,
+      role: Role.ADMIN,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    console.log("Logging in user:", user);
+    login(user, "token");
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <Image source={require('../../assets/images/login.png')} style={styles.image} />
+        <Image
+          source={require("../../assets/images/login.png")}
+          style={styles.image}
+        />
 
         <TextInput
           style={styles.input}
@@ -42,13 +61,13 @@ export default function SignInScreen() {
           onChangeText={setPassword}
         />
 
-        <TouchableOpacity style={styles.signInButton} onPress={() => router.replace('/')}>
+        <TouchableOpacity style={styles.signInButton} onPress={handleLogin}>
           <Text style={styles.signInText}>Sign In</Text>
         </TouchableOpacity>
 
         <View style={styles.signupContainer}>
           <Text style={styles.text}>Do not have an account? </Text>
-          <TouchableOpacity onPress={() => router.push('/signup')}>
+          <TouchableOpacity onPress={() => router.push("/signup")}>
             <Text style={styles.signupText}>Sign up</Text>
           </TouchableOpacity>
         </View>
@@ -63,7 +82,10 @@ export default function SignInScreen() {
           animationType="fade"
           onRequestClose={() => setForgotPasswordVisible(false)}
         >
-          <Pressable style={styles.modalOverlay} onPress={() => setForgotPasswordVisible(false)}>
+          <Pressable
+            style={styles.modalOverlay}
+            onPress={() => setForgotPasswordVisible(false)}
+          >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
               <View style={styles.modalContent}>
                 <Text style={styles.modalTitle}>Account Recovery</Text>
@@ -90,84 +112,83 @@ export default function SignInScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#fff",
     padding: 20,
   },
   image: {
     width: 200,
     height: 200,
-    resizeMode: 'contain',
+    resizeMode: "contain",
     marginBottom: 20,
   },
   input: {
-    width: '100%',
+    width: "100%",
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: "#ccc",
     fontSize: 16,
     paddingVertical: 10,
     marginBottom: 20,
   },
   signInButton: {
-    backgroundColor: '#708cff',
+    backgroundColor: "#708cff",
     paddingVertical: 12,
     paddingHorizontal: 50,
     borderRadius: 8,
     marginTop: 10,
   },
   signInText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   signupContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 15,
   },
   text: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
   },
   signupText: {
     fontSize: 14,
-    color: '#708cff',
-    fontWeight: 'bold',
+    color: "#708cff",
+    fontWeight: "bold",
   },
   forgotPassword: {
     fontSize: 14,
-    color: '#708cff',
+    color: "#708cff",
     marginTop: 10,
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalContent: {
-    backgroundColor: '#fff',
-    width: '80%',
+    backgroundColor: "#fff",
+    width: "80%",
     padding: 20,
     borderRadius: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   modalTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 15,
   },
   recoveryButton: {
-    backgroundColor: '#708cff',
+    backgroundColor: "#708cff",
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 8,
     marginTop: 15,
   },
   recoveryText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
-
