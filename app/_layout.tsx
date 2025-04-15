@@ -1,15 +1,16 @@
-import React, { createContext, useState, useContext } from 'react';
-import { Slot } from 'expo-router';
-
-const AuthContext = createContext();
-export const useAuth = () => useContext(AuthContext);
+import AuthProvider from "@/providers/auth-provider";
+import { Slot } from "expo-router";
+import React from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import Toast from "react-native-toast-message";
 
 export default function Layout() {
-  const [user, setUser] = useState(null);
-
   return (
-    <AuthContext.Provider value={{ signIn: () => setUser(false), signOut: () => setUser(null) }}>
-      <Slot />
-    </AuthContext.Provider>
+    <GestureHandlerRootView>
+      <AuthProvider>
+        <Slot />
+        <Toast />
+      </AuthProvider>
+    </GestureHandlerRootView>
   );
 }
