@@ -5,16 +5,18 @@ import Entypo from "@expo/vector-icons/Entypo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useRouter } from "expo-router";
 import React from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 export default function AdminProductScreen() {
+  const router = useRouter();
   const iconColor = useThemeColor({}, "icon");
   const iconBoundingColor = useThemeColor({}, "iconBounding");
   const borderColor = useThemeColor({}, "border");
   const handleClick = (key: string) => () => {
     switch (key) {
       case "book":
-        console.log("Book Management clicked");
+        // router.push("/(admin)/(product)/book-management");
         break;
       case "category":
         console.log("Category Management clicked");

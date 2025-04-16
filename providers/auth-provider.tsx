@@ -53,7 +53,7 @@ export default function AuthProvider({ children }: Props) {
     } else if (user && user.role === Role.ADMIN) {
       router.replace("/(admin)");
     } else if (user && user.role === Role.USER) {
-      router.replace("/(tabs)");
+      router.replace("/(staff)");
     }
   }, [user]);
 

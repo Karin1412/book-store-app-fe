@@ -1,0 +1,136 @@
+import { Book } from "@/types/book";
+import { mockAuthors } from "./author";
+import { mockPublishers } from "./publisher";
+
+export const mockBooks: Book[] = [
+  {
+    id: "1",
+    title: "The Pragmatic Programmer",
+    imageUrl:
+      "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1553383690i/2657._SY75_.jpg",
+    author: mockAuthors[0],
+    publisher: mockPublishers[0],
+    quantity: 12,
+    listedPrice: 450000,
+    salePrice: 399000,
+    importPrice: 300000,
+    isActive: true,
+  },
+  {
+    id: "2",
+    title: "Clean Code",
+    imageUrl:
+      "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1320399351i/1885._SY75_.jpg",
+    author: mockAuthors[1],
+    publisher: mockPublishers[1],
+    quantity: 7,
+    listedPrice: 500000,
+    salePrice: 450000,
+    importPrice: 350000,
+    isActive: true,
+  },
+  {
+    id: "3",
+    title: "Atomic Habits",
+    imageUrl:
+      "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1657781256i/61439040._SX50_.jpg",
+    author: mockAuthors[2],
+    publisher: mockPublishers[2],
+    quantity: 20,
+    listedPrice: 320000,
+    salePrice: 299000,
+    importPrice: 200000,
+    isActive: true,
+  },
+  {
+    id: "4",
+    title: "Deep Work",
+    imageUrl:
+      "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1738790966i/4671._SY75_.jpg",
+    author: mockAuthors[3],
+    publisher: mockPublishers[3],
+    quantity: 15,
+    listedPrice: 350000,
+    salePrice: 315000,
+    importPrice: 250000,
+    isActive: false,
+  },
+  {
+    id: "5",
+    title: "The Lean Startup",
+    imageUrl:
+      "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1327869409i/7624._SY75_.jpg",
+    author: mockAuthors[1],
+    publisher: mockPublishers[0],
+    quantity: 5,
+    listedPrice: 400000,
+    salePrice: 370000,
+    importPrice: 280000,
+    isActive: true,
+  },
+  {
+    id: "6",
+    title: "The Pragmatic Programmer",
+    imageUrl:
+      "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1586722975i/2767052._SX50_.jpg",
+    author: mockAuthors[0],
+    publisher: mockPublishers[1],
+    quantity: 12,
+    listedPrice: 450000,
+    salePrice: 399000,
+    importPrice: 300000,
+    isActive: true,
+  },
+  {
+    id: "7",
+    title: "Clean Code",
+    imageUrl:
+      "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1511302904i/890._SX50_.jpg",
+    author: mockAuthors[1],
+    publisher: mockPublishers[2],
+    quantity: 7,
+    listedPrice: 500000,
+    salePrice: 450000,
+    importPrice: 350000,
+    isActive: true,
+  },
+  {
+    id: "8",
+    title: "Atomic Habits",
+    imageUrl:
+      "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1351051208i/1420._SY75_.jpg",
+    author: mockAuthors[2],
+    publisher: mockPublishers[3],
+    quantity: 20,
+    listedPrice: 320000,
+    salePrice: 299000,
+    importPrice: 200000,
+    isActive: true,
+  },
+  {
+    id: "9",
+    title: "Deep Work",
+    imageUrl:
+      "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1622355533i/4667024._SY75_.jpg",
+    author: mockAuthors[3],
+    publisher: mockPublishers[0],
+    quantity: 15,
+    listedPrice: 350000,
+    salePrice: 315000,
+    importPrice: 250000,
+    isActive: false,
+  },
+  {
+    id: "10",
+    title: "The Lean Startup",
+    imageUrl:
+      "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1411852091i/24280._SY75_.jpg",
+    author: mockAuthors[1],
+    publisher: mockPublishers[1],
+    quantity: 5,
+    listedPrice: 400000,
+    salePrice: 370000,
+    importPrice: 280000,
+    isActive: true,
+  },
+];

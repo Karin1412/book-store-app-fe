@@ -11,7 +11,9 @@ const iconColorDark = "#9BA1A6";
 export const APP_COLOR = {
   light: {
     text: "#11181C",
+    textSecondary: "#5F6C7B",
     background: "#ffffff",
+    backgroundSecondary: "#F4F7FC",
     tint: tintColorLight,
     icon: iconColorLight,
     iconBounding: "#F4F7FC",
@@ -21,7 +23,9 @@ export const APP_COLOR = {
   },
   dark: {
     text: "#ECEDEE",
+    textSecondary: "#A0A4A8",
     background: "#151718",
+    backgroundSecondary: "#1E2022",
     tint: tintColorDark,
     icon: iconColorDark,
     iconBounding: "#2D2F31",
