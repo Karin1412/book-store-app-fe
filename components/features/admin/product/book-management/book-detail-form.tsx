@@ -5,10 +5,9 @@ import { ThemedView } from "@/components/ThemedView";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { showSuccessMessage } from "@/libs/react-native-toast-message/toast";
-import { mockAuthors } from "@/mocks/author";
+import { mockBookTitles } from "@/mocks/book-title";
 import { mockPublishers } from "@/mocks/publisher";
-import { Author } from "@/types/author";
-import { Book } from "@/types/book";
+import { Book, BookTitle } from "@/types/book";
 import { Publisher } from "@/types/publisher";
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,9 +26,10 @@ import {
 } from "react-native";
 import { bookDetailFormConfig } from "./book-detail-form.config";
 import {
-  convertAuthorToPickerItem,
+  convertBookTitleToPickerItem,
   convertPublisherToPickerItem,
 } from "./book-detail-form.utils";
+import { useRouter } from "expo-router";
 
 interface Props {
   book?: Book | null;
@@ -39,13 +39,16 @@ interface Props {
 
 type FormData = {
   imageUrl: string;
-  title: string;
-  authorId: string;
+  bookTitleId: string;
   publisherId: string;
-  price: string;
+  reprint: string;
+  listedPrice: string;
+  unitPrice: string;
 };
 
 export default function BookDetailForm({ book, style, onSubmit }: Props) {
+  const router = useRouter();
+
   const form = useForm<FormData>({
     resolver: zodResolver(bookDetailFormConfig.schema),
     defaultValues: bookDetailFormConfig.defaultValues,
@@ -56,42 +59,43 @@ export default function BookDetailForm({ book, style, onSubmit }: Props) {
     setValue,
     formState: { errors },
   } = form;
-  const [authors, setAuthors] = useState<Author[]>([]);
   const [publishers, setPublishers] = useState<Publisher[]>([]);
-
-  const getAuthor = (id: string) => {
-    return authors.find((author) => author.id === id) || null;
-  };
+  const [bookTitles, setBookTitles] = useState<BookTitle[]>([]);
 
   const getPublisher = (id: string) => {
     return publishers.find((publisher) => publisher.id === id) || null;
   };
 
-  const fetchAuthors = () => {
-    setAuthors(mockAuthors);
+  const getTitle = (id: string) => {
+    return bookTitles.find((title) => title.id === id) || null;
   };
 
   const fetchPublishers = () => {
     setPublishers(mockPublishers);
   };
 
-  const resetFormData = (book?: Book) => {
-    if (!book) return;
-    setValue("title", book.title);
-    setValue("authorId", book.author.id);
-    setValue("publisherId", book.publisher.id);
-    setValue("price", book.listedPrice.toString());
-    setValue("imageUrl", book.imageUrl);
+  const fetchBookTitles = () => {
+    setBookTitles(mockBookTitles);
   };
 
-  const handleAuthorChange = (itemValue: PickerItem) => {
-    const authorId = itemValue.value;
-    setValue("authorId", getAuthor(authorId)?.id || "");
+  const resetFormData = (book?: Book) => {
+    if (!book) return;
+    setValue("bookTitleId", book.title.id);
+    setValue("publisherId", book.publisher.id);
+    setValue("reprint", book.reprint.toString());
+    setValue("listedPrice", book.listedPrice.toString());
+    setValue("unitPrice", book.unitPrice.toString());
+    setValue("imageUrl", book.imageUrl);
   };
 
   const handlePublisherChange = (itemValue: PickerItem) => {
     const publisherId = itemValue.value;
     setValue("publisherId", getPublisher(publisherId)?.id || "");
+  };
+
+  const handleBookTitleChange = (itemValue: PickerItem) => {
+    const bookTitleId = itemValue.value;
+    setValue("bookTitleId", getPublisher(bookTitleId)?.id || "");
   };
 
   const pickImage = async () => {
@@ -109,34 +113,40 @@ export default function BookDetailForm({ book, style, onSubmit }: Props) {
     if (!result.canceled) setValue("imageUrl", result.assets[0].uri);
   };
 
+  const onAddNewOptionClick = () => {
+    router.push(
+      "/(admin)/(product)/(book-management)/book-title/new-book-title"
+    );
+  };
+
   const handleSubmitForm = (data: FormData) => {
-    const selectedAuthor = getAuthor(data.authorId);
     const selectedPublisher = getPublisher(data.publisherId);
+    const selectedTitle = getTitle(data.bookTitleId);
     // Validate selected author and publisher
-    if (!selectedAuthor || !selectedPublisher) return;
+    if (!selectedPublisher || !selectedTitle) return;
 
     // Create book object
     const newBook: Book = {
-      id: Date.now().toString(),
-      title: data.title,
+      id: book ? book.id : Date.now().toString(),
+      title: selectedTitle,
       imageUrl: data.imageUrl,
-      author: selectedAuthor,
       publisher: selectedPublisher,
       isActive: true,
       quantity: 0,
       importPrice: 0,
-      listedPrice: parseFloat(data.price),
-      salePrice: parseFloat(data.price) * 0.9,
+      listedPrice: parseFloat(data.listedPrice),
+      unitPrice: parseFloat(data.unitPrice),
+      reprint: parseInt(data.reprint),
     };
     if (onSubmit) {
       const res = onSubmit(newBook);
-      res.finally(() => showSuccessMessage("Book added successfully!"));
+      res.finally(() => showSuccessMessage("Successfully!"));
     }
   };
 
   useEffect(() => {
-    fetchAuthors();
     fetchPublishers();
+    fetchBookTitles();
   }, []);
 
   useEffect(() => {
@@ -247,32 +257,19 @@ export default function BookDetailForm({ book, style, onSubmit }: Props) {
         <View style={styles.formSection}>
           <Controller
             control={control}
-            name="title"
-            render={({ field: { onChange, value } }) => (
-              <Input
-                label="Title"
-                style={styles.input}
-                value={value}
-                onChangeText={onChange}
-                placeholder="Add title"
-                required
-                errorMessage={errors.title?.message}
-              />
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="authorId"
+            name="bookTitleId"
             render={({ field: { value } }) => (
               <Combobox
-                label="Author"
-                options={authors.map(convertAuthorToPickerItem)}
+                label="Book title"
+                options={[...bookTitles.map(convertBookTitleToPickerItem)]}
                 selectedValue={value}
-                onChange={handleAuthorChange}
-                placeholder="Select an author"
+                onChange={handleBookTitleChange}
+                dropdownIconColor={iconColor}
+                mode="dropdown"
                 required
-                errorMessage={errors.authorId?.message}
+                errorMessage={errors.bookTitleId?.message}
+                addNewOptionLabel="Add a new book title"
+                onAddNewOptionClick={onAddNewOptionClick}
               />
             )}
           />
@@ -297,17 +294,49 @@ export default function BookDetailForm({ book, style, onSubmit }: Props) {
 
           <Controller
             control={control}
-            name="price"
+            name="reprint"
+            render={({ field: { onChange, value } }) => (
+              <Input
+                value={value ? value.toString() : ""}
+                onChangeText={onChange}
+                label="Reprint"
+                placeholder="1"
+                keyboardType="numeric"
+                style={styles.input}
+                required
+                errorMessage={errors.reprint?.message}
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name="listedPrice"
             render={({ field: { onChange, value } }) => (
               <Input
                 value={value}
                 onChangeText={onChange}
-                label="Price"
+                label="Listed price"
                 placeholder="Add price"
                 keyboardType="numeric"
                 style={styles.input}
                 required
-                errorMessage={errors.price?.message}
+                errorMessage={errors.listedPrice?.message}
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name="unitPrice"
+            render={({ field: { onChange, value } }) => (
+              <Input
+                value={value}
+                onChangeText={onChange}
+                label="Unit price"
+                placeholder="Add price"
+                keyboardType="numeric"
+                style={styles.input}
+                required
+                errorMessage={errors.unitPrice?.message}
               />
             )}
           />

@@ -1,19 +1,22 @@
-import BookDetailForm from "@/components/features/admin/product/book-management/book-detail-form";
+import CustomerDetailForm from "@/components/features/admin/product/customer-management/customer-form";
 import { ThemedView } from "@/components/ThemedView";
-import { Book } from "@/types/book";
+import { Customer } from "@/types/customer";
+import { useRouter } from "expo-router";
 import React from "react";
 import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 
-export default function NewBookScreen() {
-  const handleSubmit = async (book: Book) => {
-    console.log("Book submitted:", book);
+export default function NewCustomerScreen() {
+  const router = useRouter();
+  const handleSubmit = async (customer: Customer) => {
+    console.log("Submitted:", customer);
     // Implement the submit functionality here
+    router.back();
   };
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.scrollView}>
-          <BookDetailForm
+          <CustomerDetailForm
             style={{ paddingVertical: 20 }}
             onSubmit={handleSubmit}
           />

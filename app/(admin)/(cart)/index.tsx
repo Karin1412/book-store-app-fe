@@ -3,6 +3,8 @@ import SearchInput from "@/components/common/search-input";
 import BookItem from "@/components/features/admin/product/book-management/book-item";
 import { ThemedView } from "@/components/ThemedView";
 import { mockBooks } from "@/mocks/book";
+import { mockImportNotes } from "@/mocks/import-note";
+import { ImportNote } from "@/types/import-note";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -14,9 +16,9 @@ import {
   View,
 } from "react-native";
 
-export default function AdminBookManagementScreen() {
+export default function AdminOrderManagementScreen() {
   const router = useRouter();
-  const [books, setBooks] = useState(mockBooks);
+  const [importNotes, setImportNotes] = useState<ImportNote[]>(mockImportNotes);
   const [searchQuery, setSearchQuery] = useState("");
   const [activePage, setActivePage] = useState(1);
   const totalPages = 3;
@@ -29,11 +31,7 @@ export default function AdminBookManagementScreen() {
   };
 
   const handleDelete = (id: string) => {
-    setBooks(books.filter((book) => book.id !== id));
-  };
-
-  const handleAddBook = () => {
-    router.push("/(admin)/(product)/(book-management)/new-book");
+    setImportNotes(importNotes.filter((importNote) => importNote.id !== id));
   };
 
   return (
@@ -47,7 +45,7 @@ export default function AdminBookManagementScreen() {
 
         <View style={styles.content}>
           <FlatList
-            data={books}
+            data={importNotes}
             renderItem={({ item }) => (
               <BookItem
                 book={item}
@@ -66,14 +64,6 @@ export default function AdminBookManagementScreen() {
           activePage={activePage}
           setActivePage={setActivePage}
         />
-        <TouchableOpacity style={styles.addButton} onPress={handleAddBook}>
-          <Ionicons
-            name="add"
-            size={20}
-            color="white"
-            style={styles.searchIcon}
-          />
-        </TouchableOpacity>
       </ThemedView>
     </SafeAreaView>
   );

@@ -1,34 +1,23 @@
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Book } from "@/types/book";
+import { ImportNote } from "@/types/import-note";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 
 interface Props {
-  book: Book;
+  importNote: ImportNote;
   onGoToDetails?: (id: string) => void;
-  onEdit?: (id: string) => void;
-  onDelete?: (id: string) => void;
 }
 
-export default function BookItem({
-  book,
-  onEdit,
-  onDelete,
-  onGoToDetails,
-}: Props) {
+export default function OrderItem({ importNote, onGoToDetails }: Props) {
   const iconColor = useThemeColor({}, "icon");
   const tintColor = useThemeColor({}, "tint");
   const borderColor = useThemeColor({}, "border");
-  const handleEdit = () => {
-    if (onEdit) onEdit(book.id);
-  };
+
   const handleGoToDetails = () => {
-    if (onGoToDetails) onGoToDetails(book.id);
-  };
-  const handleDelete = () => {
-    if (onDelete) onDelete(book.id);
+    if (onGoToDetails) onGoToDetails(importNote.id);
   };
 
   const styles = StyleSheet.create({

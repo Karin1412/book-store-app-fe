@@ -1,15 +1,25 @@
 import { Author } from "./author";
+import { Category } from "./category";
 import { Publisher } from "./publisher";
 
 export type Book = {
   id: string;
-  title: string;
+  title: BookTitle;
   imageUrl: string;
-  author: Author;
   publisher: Publisher;
   quantity: number;
+  reprint: number;
   listedPrice: number;
-  salePrice: number;
+  unitPrice: number;
   importPrice: number;
   isActive: boolean;
+};
+
+export type BookTitle = {
+  id: string;
+  name: string;
+  author: Author;
+  category: Category;
+  isActive: boolean;
+  description: string;
 };

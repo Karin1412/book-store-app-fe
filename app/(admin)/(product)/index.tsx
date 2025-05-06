@@ -14,30 +14,28 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import { FontAwesome5 } from "@expo/vector-icons";
 export default function AdminProductScreen() {
   const router = useRouter();
   const iconColor = useThemeColor({}, "icon");
   const iconBoundingColor = useThemeColor({}, "iconBounding");
   const borderColor = useThemeColor({}, "border");
   const handleClick = (key: string) => () => {
-    switch (key) {
-      case "book":
-        router.push("/(admin)/(product)/(book-management)");
-        break;
-      case "category":
-        console.log("Category Management clicked");
-        break;
-      case "author":
-        console.log("Author Management clicked");
-        break;
-      case "publisher":
-        console.log("Publisher Management clicked");
-        break;
-      case "warehouse":
-        console.log("Warehouse Management clicked");
-        break;
-      default:
-        break;
+    if (key === "book") {
+      router.push("/(admin)/(product)/(book-management)");
+    } else if (key === "book-title") {
+      router.push("/(admin)/(product)/(book-title)");
+    } else if (key === "category") {
+      router.push("/(admin)/(product)/(category)");
+    } else if (key === "author") {
+      router.push("/(admin)/(product)/(author)");
+    } else if (key === "publisher") {
+      router.push("/(admin)/(product)/(publisher)");
+    } else if (key === "warehouse") {
+      console.log("Warehouse Management clicked");
+    } else if (key === "customer") {
+      router.push("/(admin)/(product)/(customer)");
     }
   };
   const menuItems = [
@@ -46,6 +44,12 @@ export default function AdminProductScreen() {
       title: "Books Management",
       icon: <FontAwesome name="book" size={24} color={iconColor} />,
       onPress: handleClick("book"),
+    },
+    {
+      id: "book-title",
+      title: "Book Titles Management",
+      icon: <FontAwesome6 name="book-bookmark" size={24} color={iconColor} />,
+      onPress: handleClick("book-title"),
     },
     {
       id: "category",
@@ -76,6 +80,12 @@ export default function AdminProductScreen() {
       title: "Warehouse Management",
       icon: <MaterialIcons name="warehouse" size={24} color={iconColor} />,
       onPress: handleClick("warehouse"),
+    },
+    {
+      id: "customer",
+      title: "Customer Management",
+      icon: <FontAwesome5 name="user-friends" size={24} color={iconColor} />,
+      onPress: handleClick("customer"),
     },
   ];
 

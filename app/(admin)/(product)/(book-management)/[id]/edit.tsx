@@ -1,19 +1,41 @@
 import BookDetailForm from "@/components/features/admin/product/book-management/book-detail-form";
 import { ThemedView } from "@/components/ThemedView";
+import { mockBooks } from "@/mocks/book";
 import { Book } from "@/types/book";
-import React from "react";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import React, { useEffect } from "react";
 import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 
-export default function NewBookScreen() {
+type Params = {
+  id: string;
+};
+
+export default function BookEditScreen() {
+  const router = useRouter();
+  const { id } = useLocalSearchParams<Params>();
+  const [book, setBook] = React.useState<Book | null>(null);
+
+  const fetchBookData = async (id: string) => {
+    const res = mockBooks.find((book) => book.id === id);
+    if (res) setBook(res);
+  };
+
+  useEffect(() => {
+    if (id) fetchBookData(id);
+  }, [id]);
+
   const handleSubmit = async (book: Book) => {
     console.log("Book submitted:", book);
     // Implement the submit functionality here
+    router.back();
   };
+
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.scrollView}>
           <BookDetailForm
+            book={book}
             style={{ paddingVertical: 20 }}
             onSubmit={handleSubmit}
           />

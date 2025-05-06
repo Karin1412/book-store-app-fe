@@ -30,7 +30,7 @@ export default function AdminLayout() {
               iconName = "home";
             } else if (route.name === "(product)") {
               iconName = "cube-sharp";
-            } else if (route.name === "cart") {
+            } else if (route.name === "(cart)") {
               iconName = "cart";
             } else if (route.name === "profile") {
               iconName = "person";
@@ -58,12 +58,12 @@ export default function AdminLayout() {
         />
         <Tabs.Screen
           name="(product)"
-          options={{
-            headerShown: false,
-            tabBarLabel: "Product",
-          }}
+          options={{ headerShown: false, tabBarLabel: "Product" }}
         />
-        <Tabs.Screen name="cart" options={{ title: "Cart" }} />
+        <Tabs.Screen
+          name="(cart)"
+          options={{ headerShown: false, tabBarLabel: "Cart" }}
+        />
         <Tabs.Screen name="profile" options={{ title: "Profile" }} />
       </Tabs>
     </>

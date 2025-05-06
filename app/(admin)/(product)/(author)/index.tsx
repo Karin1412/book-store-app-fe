@@ -1,8 +1,9 @@
 import PaginationBar from "@/components/common/pagination";
 import SearchInput from "@/components/common/search-input";
-import BookItem from "@/components/features/admin/product/book-management/book-item";
+import AuthorItem from "@/components/features/admin/product/author-management/author-item";
 import { ThemedView } from "@/components/ThemedView";
-import { mockBooks } from "@/mocks/book";
+import { mockAuthors } from "@/mocks/author";
+import { Author } from "@/types/author";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -14,26 +15,22 @@ import {
   View,
 } from "react-native";
 
-export default function AdminBookManagementScreen() {
+export default function AdminAuthorManagementScreen() {
   const router = useRouter();
-  const [books, setBooks] = useState(mockBooks);
+  const [authors, setAuthors] = useState<Author[]>(mockAuthors);
   const [searchQuery, setSearchQuery] = useState("");
   const [activePage, setActivePage] = useState(1);
   const totalPages = 3;
   const handleEdit = (id: string) => {
-    router.push(`/(admin)/(product)/(book-management)/${id}/edit`);
-  };
-
-  const goToBookDetails = (id: string) => {
-    router.push(`/(admin)/(product)/(book-management)/${id}/details`);
+    router.push(`/(admin)/(product)/(author)/${id}/edit`);
   };
 
   const handleDelete = (id: string) => {
-    setBooks(books.filter((book) => book.id !== id));
+    setAuthors(authors.filter((author) => author.id !== id));
   };
 
-  const handleAddBook = () => {
-    router.push("/(admin)/(product)/(book-management)/new-book");
+  const handleAddNew = () => {
+    router.push("/(admin)/(product)/(author)/new-author");
   };
 
   return (
@@ -47,11 +44,10 @@ export default function AdminBookManagementScreen() {
 
         <View style={styles.content}>
           <FlatList
-            data={books}
+            data={authors}
             renderItem={({ item }) => (
-              <BookItem
-                book={item}
-                onGoToDetails={goToBookDetails}
+              <AuthorItem
+                author={item}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
               />
@@ -66,7 +62,7 @@ export default function AdminBookManagementScreen() {
           activePage={activePage}
           setActivePage={setActivePage}
         />
-        <TouchableOpacity style={styles.addButton} onPress={handleAddBook}>
+        <TouchableOpacity style={styles.addButton} onPress={handleAddNew}>
           <Ionicons
             name="add"
             size={20}

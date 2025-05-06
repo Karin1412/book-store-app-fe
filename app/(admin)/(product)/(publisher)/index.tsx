@@ -1,8 +1,14 @@
 import PaginationBar from "@/components/common/pagination";
 import SearchInput from "@/components/common/search-input";
-import BookItem from "@/components/features/admin/product/book-management/book-item";
+import CategoryItem from "@/components/features/admin/product/category-management/category-item";
+import PublisherItem from "@/components/features/admin/product/publisher-management/publisher-item";
 import { ThemedView } from "@/components/ThemedView";
-import { mockBooks } from "@/mocks/book";
+import { mockBookTitles } from "@/mocks/book-title";
+import { mockCategories } from "@/mocks/category";
+import { mockPublishers } from "@/mocks/publisher";
+import { BookTitle } from "@/types/book";
+import { Category } from "@/types/category";
+import { Publisher } from "@/types/publisher";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -14,26 +20,22 @@ import {
   View,
 } from "react-native";
 
-export default function AdminBookManagementScreen() {
+export default function AdminPublisherManagementScreen() {
   const router = useRouter();
-  const [books, setBooks] = useState(mockBooks);
+  const [publishers, setPublishers] = useState<Publisher[]>(mockPublishers);
   const [searchQuery, setSearchQuery] = useState("");
   const [activePage, setActivePage] = useState(1);
   const totalPages = 3;
   const handleEdit = (id: string) => {
-    router.push(`/(admin)/(product)/(book-management)/${id}/edit`);
-  };
-
-  const goToBookDetails = (id: string) => {
-    router.push(`/(admin)/(product)/(book-management)/${id}/details`);
+    router.push(`/(admin)/(product)/(publisher)/${id}/edit`);
   };
 
   const handleDelete = (id: string) => {
-    setBooks(books.filter((book) => book.id !== id));
+    setPublishers(publishers.filter((publisher) => publisher.id !== id));
   };
 
-  const handleAddBook = () => {
-    router.push("/(admin)/(product)/(book-management)/new-book");
+  const handleAddNew = () => {
+    router.push("/(admin)/(product)/(publisher)/new-publisher");
   };
 
   return (
@@ -47,11 +49,10 @@ export default function AdminBookManagementScreen() {
 
         <View style={styles.content}>
           <FlatList
-            data={books}
+            data={publishers}
             renderItem={({ item }) => (
-              <BookItem
-                book={item}
-                onGoToDetails={goToBookDetails}
+              <PublisherItem
+                publisher={item}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
               />
@@ -66,7 +67,7 @@ export default function AdminBookManagementScreen() {
           activePage={activePage}
           setActivePage={setActivePage}
         />
-        <TouchableOpacity style={styles.addButton} onPress={handleAddBook}>
+        <TouchableOpacity style={styles.addButton} onPress={handleAddNew}>
           <Ionicons
             name="add"
             size={20}

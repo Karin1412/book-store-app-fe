@@ -8,7 +8,7 @@ interface Props {
   setActivePage: (page: number) => void;
 }
 
-export default function BookPagination({
+export default function PaginationBar({
   totalPages,
   activePage,
   setActivePage,

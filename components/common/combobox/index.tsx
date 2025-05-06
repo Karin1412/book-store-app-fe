@@ -10,6 +10,8 @@ type Props = {
   errorMessage?: string;
   required?: boolean;
   onChange?: (selected: PickerItem) => void;
+  addNewOptionLabel?: string;
+  onAddNewOptionClick?: () => void;
 } & PickerProps;
 export type PickerItem = {
   label: string;
@@ -23,15 +25,25 @@ export default function Combobox({
   errorMessage,
   required,
   placeholder,
+  addNewOptionLabel,
+  onAddNewOptionClick,
   ...props
 }: Props) {
+  console.log("errorMessage", errorMessage);
   const handleValueChange = (itemValue: any) => {
+    if (itemValue === "") {
+      if (addNewOptionLabel && onAddNewOptionClick) {
+        return onAddNewOptionClick();
+      }
+    }
+
     const itemIndex = options.findIndex((item) => item.value === itemValue);
     if (itemIndex === -1) return;
     if (onChange) onChange(options[itemIndex]);
   };
 
   const textColor = useThemeColor({}, "text");
+  const textSecondaryColor = useThemeColor({}, "textSecondary");
   const iconColor = useThemeColor({}, "icon");
   const borderColor = useThemeColor({}, "border");
 
@@ -70,6 +82,9 @@ export default function Combobox({
       fontSize: 12,
       marginTop: 5,
     },
+    placeholder: {
+      color: textSecondaryColor,
+    },
   });
 
   return (
@@ -90,7 +105,21 @@ export default function Combobox({
           onValueChange={handleValueChange}
           {...props}
         >
-          <Picker.Item key="default-option" label={placeholder} value="" />
+          {addNewOptionLabel ? (
+            <Picker.Item
+              key="add-option"
+              label={addNewOptionLabel}
+              value=""
+              style={styles.placeholder}
+            />
+          ) : (
+            <Picker.Item
+              key="default-option"
+              label={placeholder}
+              value=""
+              style={styles.placeholder}
+            />
+          )}
           {options.map((item) => (
             <Picker.Item
               key={item.value}

@@ -1,8 +1,9 @@
 import PaginationBar from "@/components/common/pagination";
 import SearchInput from "@/components/common/search-input";
-import BookItem from "@/components/features/admin/product/book-management/book-item";
+import BookTitleItem from "@/components/features/admin/product/book-title-management/book-title-item";
 import { ThemedView } from "@/components/ThemedView";
-import { mockBooks } from "@/mocks/book";
+import { mockBookTitles } from "@/mocks/book-title";
+import { BookTitle } from "@/types/book";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -14,26 +15,26 @@ import {
   View,
 } from "react-native";
 
-export default function AdminBookManagementScreen() {
+export default function AdminBookTitleManagementScreen() {
   const router = useRouter();
-  const [books, setBooks] = useState(mockBooks);
+  const [bookTitles, setBookTitles] = useState<BookTitle[]>(mockBookTitles);
   const [searchQuery, setSearchQuery] = useState("");
   const [activePage, setActivePage] = useState(1);
   const totalPages = 3;
   const handleEdit = (id: string) => {
-    router.push(`/(admin)/(product)/(book-management)/${id}/edit`);
+    router.push(`/(admin)/(product)/(book-title)/${id}/edit`);
   };
 
   const goToBookDetails = (id: string) => {
-    router.push(`/(admin)/(product)/(book-management)/${id}/details`);
+    router.push(`/(admin)/(product)/(book-title)/${id}/details`);
   };
 
   const handleDelete = (id: string) => {
-    setBooks(books.filter((book) => book.id !== id));
+    setBookTitles(bookTitles.filter((bookTitle) => bookTitle.id !== id));
   };
 
-  const handleAddBook = () => {
-    router.push("/(admin)/(product)/(book-management)/new-book");
+  const handleAddBookTitle = () => {
+    router.push("/(admin)/(product)/(book-title)/new-book-title");
   };
 
   return (
@@ -47,10 +48,10 @@ export default function AdminBookManagementScreen() {
 
         <View style={styles.content}>
           <FlatList
-            data={books}
+            data={bookTitles}
             renderItem={({ item }) => (
-              <BookItem
-                book={item}
+              <BookTitleItem
+                bookTitle={item}
                 onGoToDetails={goToBookDetails}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
@@ -66,7 +67,7 @@ export default function AdminBookManagementScreen() {
           activePage={activePage}
           setActivePage={setActivePage}
         />
-        <TouchableOpacity style={styles.addButton} onPress={handleAddBook}>
+        <TouchableOpacity style={styles.addButton} onPress={handleAddBookTitle}>
           <Ionicons
             name="add"
             size={20}
