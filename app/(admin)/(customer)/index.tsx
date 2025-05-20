@@ -1,37 +1,26 @@
 import PaginationBar from "@/components/common/pagination";
 import SearchInput from "@/components/common/search-input";
-import BookItem from "@/components/features/admin/product/book-management/book-item";
+import CustomerItem from "@/components/features/admin/customer/customer-management/customer-item";
 import { ThemedView } from "@/components/ThemedView";
-import { mockBooks } from "@/mocks/book";
-import { mockImportNotes } from "@/mocks/import-note";
-import { ImportNote } from "@/types/import-note";
-import { Ionicons } from "@expo/vector-icons";
+import { mockCustomers } from "@/mocks/customer";
+import { Customer } from "@/types/customer";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import {
-  FlatList,
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, SafeAreaView, StyleSheet, View } from "react-native";
 
-export default function AdminOrderManagementScreen() {
+export default function AdminCustomerManagementScreen() {
   const router = useRouter();
-  const [importNotes, setImportNotes] = useState<ImportNote[]>(mockImportNotes);
+  const [customers, setCustomers] = useState<Customer[]>(mockCustomers);
   const [searchQuery, setSearchQuery] = useState("");
   const [activePage, setActivePage] = useState(1);
   const totalPages = 3;
-  const handleEdit = (id: string) => {
-    router.push(`/(admin)/(product)/(book-management)/${id}/edit`);
-  };
 
   const goToBookDetails = (id: string) => {
-    router.push(`/(admin)/(product)/(book-management)/${id}/details`);
+    router.push(`/(admin)/(customer)/${id}/details`);
   };
 
   const handleDelete = (id: string) => {
-    setImportNotes(importNotes.filter((importNote) => importNote.id !== id));
+    setCustomers(customers.filter((customer) => customer.id !== id));
   };
 
   return (
@@ -43,21 +32,20 @@ export default function AdminOrderManagementScreen() {
           onChangeText={setSearchQuery}
         />
 
-        {/* <View style={styles.content}>
+        <View style={styles.content}>
           <FlatList
-            data={importNotes}
+            data={customers}
             renderItem={({ item }) => (
-              <BookItem
-                book={item}
+              <CustomerItem
+                customer={item}
                 onGoToDetails={goToBookDetails}
-                onEdit={handleEdit}
                 onDelete={handleDelete}
               />
             )}
             keyExtractor={(item) => item.id}
             contentContainerStyle={styles.booksList}
           />
-        </View> */}
+        </View>
 
         <PaginationBar
           totalPages={totalPages}

@@ -34,6 +34,8 @@ export default function AdminLayout() {
               iconName = "cart";
             } else if (route.name === "profile") {
               iconName = "person";
+            } else if (route.name === "(customer)") {
+              iconName = "people";
             }
 
             return <Ionicons name={iconName} size={size} color={color} />;
@@ -63,6 +65,10 @@ export default function AdminLayout() {
         <Tabs.Screen
           name="(cart)"
           options={{ headerShown: false, tabBarLabel: "Cart" }}
+        />
+        <Tabs.Screen
+          name="(customer)"
+          options={{ headerShown: false, tabBarLabel: "Customer" }}
         />
         <Tabs.Screen name="profile" options={{ title: "Profile" }} />
       </Tabs>
