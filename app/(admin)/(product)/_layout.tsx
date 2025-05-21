@@ -85,6 +85,32 @@ export default function AdminProductLayout() {
           }}
         />
 
+        {/* Book position management */}
+        <Stack.Screen
+          name="(book-position)/index"
+          options={{
+            headerTitle: "Book position management",
+          }}
+        />
+        <Stack.Screen
+          name="(book-position)/new-book-position"
+          options={{
+            headerTitle: "Add a new book position",
+          }}
+        />
+        <Stack.Screen
+          name="(book-position)/[id]/edit"
+          options={{
+            headerTitle: "Edit book position",
+          }}
+        />
+        <Stack.Screen
+          name="(book-position)/[id]/details"
+          options={{
+            headerTitle: "Book position details",
+          }}
+        />
+
         {/* Category management */}
         <Stack.Screen
           name="(category)/index"

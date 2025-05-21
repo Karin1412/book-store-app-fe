@@ -23,3 +23,12 @@ export type BookTitle = {
   isActive: boolean;
   description: string;
 };
+
+export type BookPosition = {
+  id: string;
+  zone: string;
+  shelf: string;
+  row: string;
+  note: string;
+  bookTitle: BookTitle;
+};

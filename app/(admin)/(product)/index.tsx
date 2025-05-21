@@ -26,6 +26,8 @@ export default function AdminProductScreen() {
       router.push("/(admin)/(product)/(book-management)");
     } else if (key === "book-title") {
       router.push("/(admin)/(product)/(book-title)");
+    } else if (key === "book-position") {
+      router.push("/(admin)/(product)/(book-position)");
     } else if (key === "category") {
       router.push("/(admin)/(product)/(category)");
     } else if (key === "author") {
@@ -50,6 +52,12 @@ export default function AdminProductScreen() {
       title: "Book Titles Management",
       icon: <FontAwesome6 name="book-bookmark" size={24} color={iconColor} />,
       onPress: handleClick("book-title"),
+    },
+    {
+      id: "book-position",
+      title: "Book Positions Management",
+      icon: <FontAwesome5 name="search-location" size={24} color={iconColor} />,
+      onPress: handleClick("book-position"),
     },
     {
       id: "category",
