@@ -1,9 +1,8 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { mockBookTitles } from "@/mocks/book-title";
 import { mockBookPositions } from "@/mocks/bookPosition";
-import { BookPosition, BookTitle } from "@/types/book";
+import { BookPosition } from "@/types/book";
 import { Feather } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect } from "react";
@@ -13,6 +12,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  useColorScheme,
   View,
 } from "react-native";
 
@@ -21,16 +21,24 @@ type Params = {
 };
 
 export default function BookPositionDetailScreen() {
+  const theme = useColorScheme();
+  const tintColor = useThemeColor({}, "tint");
+  const textSecondaryColor = useThemeColor({}, "textSecondary");
+  const iconColor = useThemeColor({}, "icon");
+
   const router = useRouter();
   const { id } = useLocalSearchParams<Params>();
   const [bookPosition, setBookPosition] = React.useState<BookPosition | null>(
     null
   );
-  const textSecondaryColor = useThemeColor({}, "textSecondary");
 
   const fetchData = async (id: string) => {
     const res = mockBookPositions.find((pos) => pos.id === id);
     if (res) setBookPosition(res);
+  };
+
+  const handleTestQRCode = async () => {
+    router.push(`/(admin)/scan-qr-code`);
   };
 
   useEffect(() => {
@@ -46,11 +54,6 @@ export default function BookPositionDetailScreen() {
     // Implement delete functionality here
     console.log("Delete book title with id:", bookPosition.id);
     router.back();
-  };
-
-  const handleSubmit = async (bookPosition: BookPosition) => {
-    console.log("Book title submitted:", bookPosition);
-    // Implement the submit functionality here
   };
 
   if (!bookPosition) return null; // Handle loading state or error state
@@ -93,6 +96,18 @@ export default function BookPositionDetailScreen() {
       fontSize: 16,
       color: textSecondaryColor,
     },
+    submitButton: {
+      backgroundColor: tintColor,
+      borderRadius: 8,
+      paddingVertical: 14,
+      alignItems: "center",
+      marginTop: 20,
+    },
+    submitButtonText: {
+      color: theme === "light" ? "white" : "black",
+      fontSize: 16,
+      fontWeight: "500",
+    },
   });
   return (
     <ThemedView style={styles.container}>
@@ -102,13 +117,13 @@ export default function BookPositionDetailScreen() {
             <View style={styles.spacer} />
             <View style={styles.headerButtons}>
               <TouchableOpacity onPress={handleEdit} style={styles.iconButton}>
-                <Feather name="edit-2" size={20} color="#666" />
+                <Feather name="edit-2" size={20} color={iconColor} />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={handleDelete}
                 style={styles.iconButton}
               >
-                <Feather name="trash-2" size={20} color="#666" />
+                <Feather name="trash-2" size={20} color={iconColor} />
               </TouchableOpacity>
             </View>
           </View>
@@ -137,6 +152,13 @@ export default function BookPositionDetailScreen() {
             <ThemedText style={styles.label}>Note</ThemedText>
             <Text style={styles.value}>{bookPosition.note}</Text>
           </View>
+
+          <TouchableOpacity
+            style={styles.submitButton}
+            onPress={handleTestQRCode}
+          >
+            <Text style={styles.submitButtonText}>Test QR Code</Text>
+          </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
     </ThemedView>

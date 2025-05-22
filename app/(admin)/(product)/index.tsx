@@ -5,7 +5,7 @@ import Entypo from "@expo/vector-icons/Entypo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import React from "react";
 import {
   SafeAreaView,
@@ -132,6 +132,12 @@ export default function AdminProductScreen() {
   });
   return (
     <SafeAreaView style={styles.container}>
+      <Stack
+        screenOptions={{
+          presentation: "transparentModal",
+          navigationBarHidden: true,
+        }}
+      ></Stack>
       <ThemedView style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <View style={styles.menuContainer}>

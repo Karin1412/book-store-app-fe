@@ -4,6 +4,7 @@ import ChartSection from "@/components/features/admin/home/chart-section";
 import ReportCard from "@/components/features/admin/home/report-card";
 import { ThemedView } from "@/components/ThemedView";
 import { showSuccessMessage } from "@/libs/react-native-toast-message/toast";
+import { Stack } from "expo-router";
 import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
 export default function AdminHomeScreen() {

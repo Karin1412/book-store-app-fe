@@ -24,6 +24,7 @@ export default function BookTitleDetailScreen() {
   const { id } = useLocalSearchParams<Params>();
   const [bookTitle, setBookTitle] = React.useState<BookTitle | null>(null);
   const textSecondaryColor = useThemeColor({}, "textSecondary");
+  const iconColor = useThemeColor({}, "icon");
 
   const fetchData = async (id: string) => {
     const res = mockBookTitles.find((book) => book.id === id);
@@ -98,13 +99,13 @@ export default function BookTitleDetailScreen() {
             <View style={styles.spacer} />
             <View style={styles.headerButtons}>
               <TouchableOpacity onPress={handleEdit} style={styles.iconButton}>
-                <Feather name="edit-2" size={20} color="#666" />
+                <Feather name="edit-2" size={20} color={iconColor} />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={handleDelete}
                 style={styles.iconButton}
               >
-                <Feather name="trash-2" size={20} color="#666" />
+                <Feather name="trash-2" size={20} color={iconColor} />
               </TouchableOpacity>
             </View>
           </View>

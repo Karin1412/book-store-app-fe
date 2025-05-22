@@ -60,17 +60,31 @@ export default function AdminLayout() {
         />
         <Tabs.Screen
           name="(product)"
-          options={{ headerShown: false, tabBarLabel: "Product" }}
+          options={{
+            headerShown: false,
+            tabBarLabel: "Product",
+          }}
         />
         <Tabs.Screen
           name="(cart)"
-          options={{ headerShown: false, tabBarLabel: "Cart" }}
+          options={{
+            headerShown: false,
+            tabBarLabel: "Cart",
+          }}
         />
         <Tabs.Screen
           name="(customer)"
           options={{ headerShown: false, tabBarLabel: "Customer" }}
         />
         <Tabs.Screen name="profile" options={{ title: "Profile" }} />
+        <Tabs.Screen
+          name="scan-qr-code"
+          options={{
+            headerShown: false,
+            href: null,
+            tabBarStyle: { display: "none" },
+          }}
+        />
       </Tabs>
     </>
   );
