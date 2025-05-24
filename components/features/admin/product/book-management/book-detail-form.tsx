@@ -114,9 +114,7 @@ export default function BookDetailForm({ book, style, onSubmit }: Props) {
   };
 
   const onAddNewOptionClick = () => {
-    router.push(
-      "/(admin)/(product)/(book-management)/book-title/new-book-title"
-    );
+    router.push("/(admin)/(product)/(book-title)/new-book-title");
   };
 
   const handleSubmitForm = (data: FormData) => {

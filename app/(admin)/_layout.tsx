@@ -32,7 +32,7 @@ export default function AdminLayout() {
               iconName = "cube-sharp";
             } else if (route.name === "(cart)") {
               iconName = "cart";
-            } else if (route.name === "profile") {
+            } else if (route.name === "(profile)") {
               iconName = "person";
             } else if (route.name === "(customer)") {
               iconName = "people";
@@ -76,7 +76,10 @@ export default function AdminLayout() {
           name="(customer)"
           options={{ headerShown: false, tabBarLabel: "Customer" }}
         />
-        <Tabs.Screen name="profile" options={{ title: "Profile" }} />
+        <Tabs.Screen
+          name="(profile)"
+          options={{ headerShown: false, tabBarLabel: "Profile" }}
+        />
         <Tabs.Screen
           name="scan-qr-code"
           options={{

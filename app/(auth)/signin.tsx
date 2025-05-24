@@ -1,19 +1,19 @@
+import { useAuth } from "@/hooks/useAuth";
+import { mockUsers } from "@/mocks/user";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-  View,
-  Text,
   Image,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
+  Keyboard,
   Modal,
   Pressable,
-  Keyboard,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
   TouchableWithoutFeedback,
+  View,
 } from "react-native";
-import { useRouter } from "expo-router";
-import { useAuth } from "@/hooks/useAuth";
-import { Role, User } from "@/types/user";
 
 export default function SignInScreen() {
   const router = useRouter();
@@ -24,15 +24,7 @@ export default function SignInScreen() {
   const [recoveryEmail, setRecoveryEmail] = useState("");
 
   const handleLogin = () => {
-    const user: User = {
-      id: "1",
-      name: "John Doe",
-      email: email,
-      role: Role.ADMIN,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    console.log("Logging in user:", user);
+    const user = mockUsers[0];
     login(user, "token");
   };
 

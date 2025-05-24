@@ -2,9 +2,12 @@ export type User = {
   id: string;
   name: string;
   email: string;
+  phone: string;
+  address: string;
+  salt: string;
   role: Role;
-  createdAt: string;
-  updatedAt: string;
+  imgUrl: string;
+  isActive: boolean;
 };
 
 export enum Role {
