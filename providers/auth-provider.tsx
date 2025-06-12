@@ -12,6 +12,7 @@ interface Props {
 
 export default function AuthProvider({ children }: Props) {
   const router = useRouter();
+  const [loaded, setLoaded] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
@@ -48,6 +49,8 @@ export default function AuthProvider({ children }: Props) {
   }, []);
 
   useEffect(() => {
+    if (!loaded) return;
+
     if (!user) {
       router.replace("/(auth)/welcome");
     } else if (user && user.role === Role.ADMIN) {
@@ -56,6 +59,10 @@ export default function AuthProvider({ children }: Props) {
       router.replace("/(staff)");
     }
   }, [user]);
+
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
