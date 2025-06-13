@@ -54,7 +54,7 @@ export default function AuthProvider({ children }: Props) {
     if (!user) {
       router.replace("/(auth)/welcome");
     } else if (user && user.role === Role.ADMIN) {
-      router.replace("/(protected)");
+      router.replace("/(cus)");
     }
   }, [user]);
 
