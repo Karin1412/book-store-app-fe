@@ -1,5 +1,6 @@
 import BookTitleDetailForm from "@/components/features/admin/product/book-title-management/book-title-form";
 import { ThemedView } from "@/components/ThemedView";
+import { CreateBookTitle } from "@/services/book-title";
 import { BookTitle } from "@/types/book";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -9,7 +10,14 @@ export default function NewBookTitleScreen() {
   const router = useRouter();
   const handleSubmit = async (bookTitle: BookTitle) => {
     console.log("Book title submitted:", bookTitle);
-    // Implement the submit functionality here
+    await CreateBookTitle(bookTitle)
+      .then((res) => {
+        console.log("Created:", res);
+        router.back();
+      })
+      .catch((error) => {
+        console.error("Error creating:", error);
+      });
     router.back();
   };
   return (

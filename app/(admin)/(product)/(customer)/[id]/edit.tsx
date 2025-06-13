@@ -1,9 +1,6 @@
-import CategoryDetailForm from "@/components/features/admin/product/category-management/category-form";
 import CustomerDetailForm from "@/components/features/admin/product/customer-management/customer-form";
 import { ThemedView } from "@/components/ThemedView";
-import { mockCategories } from "@/mocks/category";
-import { mockCustomers } from "@/mocks/customer";
-import { Category } from "@/types/category";
+import { GetCustomerById, UpdateCustomer } from "@/services/customer";
 import { Customer } from "@/types/customer";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect } from "react";
@@ -19,8 +16,11 @@ export default function CategoryEditScreen() {
   const [customer, setCustomer] = React.useState<Customer | null>(null);
 
   const fetchData = async (id: string) => {
-    const res = mockCustomers.find((customer) => customer.id === id);
-    if (res) setCustomer(res);
+    await GetCustomerById(id)
+      .then(setCustomer)
+      .catch((error) => {
+        console.error("Error fetching customer:", error);
+      });
   };
 
   useEffect(() => {
@@ -29,8 +29,13 @@ export default function CategoryEditScreen() {
 
   const handleSubmit = async (customer: Customer) => {
     console.log("Submitted:", customer);
-    // Implement the submit functionality here
-    router.back();
+    await UpdateCustomer(id, customer)
+      .then(() => {
+        router.back();
+      })
+      .catch((error) => {
+        console.error("Error creating customer:", error);
+      });
   };
 
   return (

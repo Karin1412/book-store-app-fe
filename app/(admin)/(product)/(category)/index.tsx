@@ -2,13 +2,11 @@ import PaginationBar from "@/components/common/pagination";
 import SearchInput from "@/components/common/search-input";
 import CategoryItem from "@/components/features/admin/product/category-management/category-item";
 import { ThemedView } from "@/components/ThemedView";
-import { mockBookTitles } from "@/mocks/book-title";
-import { mockCategories } from "@/mocks/category";
-import { BookTitle } from "@/types/book";
+import { GetCategories } from "@/services/category";
 import { Category } from "@/types/category";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import { useFocusEffect, useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   SafeAreaView,
@@ -19,7 +17,7 @@ import {
 
 export default function AdminCategoryManagementScreen() {
   const router = useRouter();
-  const [categories, setCategories] = useState<Category[]>(mockCategories);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activePage, setActivePage] = useState(1);
   const totalPages = 3;
@@ -34,6 +32,21 @@ export default function AdminCategoryManagementScreen() {
   const handleAddNew = () => {
     router.push("/(admin)/(product)/(category)/new-category");
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchCategories = async () => {
+        await GetCategories().then((res) => {
+          setCategories(res.data);
+        });
+      };
+      fetchCategories();
+    }, [])
+  );
+
+  useEffect(() => {
+    console.log("Categories:", categories);
+  }, [categories]);
 
   return (
     <SafeAreaView style={styles.themeContainer}>

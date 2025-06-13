@@ -1,5 +1,6 @@
 import { useAuth } from "@/hooks/useAuth";
-import { mockUsers } from "@/mocks/user";
+import { GetProfile, Login } from "@/services/auth";
+import { Role, User } from "@/types/user";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -23,9 +24,25 @@ export default function SignInScreen() {
   const [forgotPasswordVisible, setForgotPasswordVisible] = useState(false);
   const [recoveryEmail, setRecoveryEmail] = useState("");
 
-  const handleLogin = () => {
-    const user = mockUsers[0];
-    login(user, "token");
+  const handleLogin = async () => {
+    await Login(email, password).then(async (res) => {
+      const token = res.data.accessToken.token;
+      return await GetProfile(token).then((profile) => {
+        console.log("profile:", profile);
+        const user: User = {
+          id: profile.id,
+          name: profile.name,
+          email: profile.email,
+          role: email.includes("admin") ? Role.ADMIN : Role.USER,
+          phone: profile.phone,
+          address: profile.address,
+          imgUrl: profile.imgUrl,
+          isActive: profile.isActive,
+          salt: "",
+        };
+        login(user, token);
+      });
+    });
   };
 
   return (

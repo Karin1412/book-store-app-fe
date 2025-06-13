@@ -21,10 +21,11 @@ export default function AuthProvider({ children }: Props) {
   };
 
   const saveToken = async (token: string) => {
-    await AsyncStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
+    await AsyncStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, JSON.stringify(token));
   };
 
   const login = async (user: User, token: string) => {
+    console.log("Login called with user:", user, "and token:", token);
     setUser(user);
     setToken(token);
     await saveUser(user);
@@ -54,9 +55,9 @@ export default function AuthProvider({ children }: Props) {
     if (!user) {
       router.replace("/(auth)/welcome");
     } else if (user && user.role === Role.ADMIN) {
-      router.replace("/(admin)");
+      router.replace("/(cus)");
     } else if (user && user.role === Role.USER) {
-      router.replace("/(staff)");
+      router.replace("/(cus)");
     }
   }, [user]);
 

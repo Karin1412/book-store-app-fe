@@ -23,6 +23,7 @@ export const APP_COLOR = {
     green: "#4CAF50",
     red: "#F44336",
     shadow: "rgba(0, 0, 0, 0.5)",
+    cardBackground: "#F4F7FC",
   },
   dark: {
     text: "#ECEDEE",
@@ -38,5 +39,6 @@ export const APP_COLOR = {
     green: "#4CAF50",
     red: "#F44336",
     shadow: "rgba(255, 255, 255, 0.4)",
+    cardBackground: "#1E2022",
   },
 };

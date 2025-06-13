@@ -1,5 +1,6 @@
 import CustomerDetailForm from "@/components/features/admin/product/customer-management/customer-form";
 import { ThemedView } from "@/components/ThemedView";
+import { CreateCustomer } from "@/services/customer";
 import { Customer } from "@/types/customer";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -9,8 +10,13 @@ export default function NewCustomerScreen() {
   const router = useRouter();
   const handleSubmit = async (customer: Customer) => {
     console.log("Submitted:", customer);
-    // Implement the submit functionality here
-    router.back();
+    await CreateCustomer(customer)
+      .then(() => {
+        router.back();
+      })
+      .catch((error) => {
+        console.error("Error creating customer:", error);
+      });
   };
   return (
     <ThemedView style={styles.container}>
