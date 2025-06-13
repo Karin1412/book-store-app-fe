@@ -74,7 +74,11 @@ export default function AdminLayout() {
         />
         <Tabs.Screen
           name="(customer)"
-          options={{ headerShown: false, tabBarLabel: "Customer" }}
+          options={{
+            headerShown: false,
+            tabBarLabel: "Customer",
+            href: null,
+          }}
         />
         <Tabs.Screen
           name="(profile)"

@@ -21,10 +21,11 @@ export default function AuthProvider({ children }: Props) {
   };
 
   const saveToken = async (token: string) => {
-    await AsyncStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, token);
+    await AsyncStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, JSON.stringify(token));
   };
 
   const login = async (user: User, token: string) => {
+    console.log("Login called with user:", user, "and token:", token);
     setUser(user);
     setToken(token);
     await saveUser(user);

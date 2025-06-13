@@ -1,13 +1,21 @@
 import BookDetailForm from "@/components/features/admin/product/book-management/book-detail-form";
 import { ThemedView } from "@/components/ThemedView";
+import { CreateBook } from "@/services/book";
 import { Book } from "@/types/book";
+import { useRouter } from "expo-router";
 import React from "react";
 import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 
 export default function NewBookScreen() {
+  const router = useRouter();
   const handleSubmit = async (book: Book) => {
-    console.log("Book submitted:", book);
-    // Implement the submit functionality here
+    await CreateBook(book)
+      .then(() => {
+        router.back();
+      })
+      .catch((error) => {
+        console.error("Error creating book:", error.log);
+      });
   };
   return (
     <ThemedView style={styles.container}>

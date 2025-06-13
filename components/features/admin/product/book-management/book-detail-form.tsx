@@ -5,13 +5,14 @@ import { ThemedView } from "@/components/ThemedView";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { showSuccessMessage } from "@/libs/react-native-toast-message/toast";
-import { mockBookTitles } from "@/mocks/book-title";
-import { mockPublishers } from "@/mocks/publisher";
+import { GetAllBookTitles } from "@/services/book-title";
+import { GetPublishers } from "@/services/publisher";
 import { Book, BookTitle } from "@/types/book";
 import { Publisher } from "@/types/publisher";
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as ImagePicker from "expo-image-picker";
+import { useFocusEffect, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -29,7 +30,6 @@ import {
   convertBookTitleToPickerItem,
   convertPublisherToPickerItem,
 } from "./book-detail-form.utils";
-import { useRouter } from "expo-router";
 
 interface Props {
   book?: Book | null;
@@ -66,16 +66,8 @@ export default function BookDetailForm({ book, style, onSubmit }: Props) {
     return publishers.find((publisher) => publisher.id === id) || null;
   };
 
-  const getTitle = (id: string) => {
+  const getBookTitle = (id: string) => {
     return bookTitles.find((title) => title.id === id) || null;
-  };
-
-  const fetchPublishers = () => {
-    setPublishers(mockPublishers);
-  };
-
-  const fetchBookTitles = () => {
-    setBookTitles(mockBookTitles);
   };
 
   const resetFormData = (book?: Book) => {
@@ -95,7 +87,7 @@ export default function BookDetailForm({ book, style, onSubmit }: Props) {
 
   const handleBookTitleChange = (itemValue: PickerItem) => {
     const bookTitleId = itemValue.value;
-    setValue("bookTitleId", getPublisher(bookTitleId)?.id || "");
+    setValue("bookTitleId", getBookTitle(bookTitleId)?.id || "");
   };
 
   const pickImage = async () => {
@@ -119,7 +111,7 @@ export default function BookDetailForm({ book, style, onSubmit }: Props) {
 
   const handleSubmitForm = (data: FormData) => {
     const selectedPublisher = getPublisher(data.publisherId);
-    const selectedTitle = getTitle(data.bookTitleId);
+    const selectedTitle = getBookTitle(data.bookTitleId);
     // Validate selected author and publisher
     if (!selectedPublisher || !selectedTitle) return;
 
@@ -142,10 +134,25 @@ export default function BookDetailForm({ book, style, onSubmit }: Props) {
     }
   };
 
-  useEffect(() => {
-    fetchPublishers();
-    fetchBookTitles();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        const resBookTitles = GetAllBookTitles();
+        const resPublishers = GetPublishers();
+
+        Promise.all([resBookTitles, resPublishers])
+          .then(([bookTitlesData, publishersData]) => {
+            setBookTitles(bookTitlesData);
+            setPublishers(publishersData.data);
+          })
+          .catch((error) => {
+            console.error("Error fetching data:", error);
+          });
+      };
+
+      fetchData();
+    }, [])
+  );
 
   useEffect(() => {
     if (book) resetFormData(book);

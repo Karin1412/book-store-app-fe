@@ -4,12 +4,13 @@ import { ThemedView } from "@/components/ThemedView";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { showSuccessMessage } from "@/libs/react-native-toast-message/toast";
-import { mockAuthors } from "@/mocks/author";
-import { mockCategories } from "@/mocks/category";
+import { GetAllAuthors } from "@/services/author";
+import { GetCategories } from "@/services/category";
 import { Author } from "@/types/author";
 import { BookTitle } from "@/types/book";
 import { Category } from "@/types/category";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useFocusEffect } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -59,19 +60,11 @@ export default function BookTitleDetailForm({
   const [categories, setCategories] = useState<Category[]>([]);
 
   const getAuthor = (id: string) => {
-    return mockAuthors.find((author) => author.id === id) || null;
+    return authors.find((author) => author.id === id) || null;
   };
 
   const getCategory = (id: string) => {
-    return mockCategories.find((category) => category.id === id) || null;
-  };
-
-  const fetchAuthors = () => {
-    setAuthors(mockAuthors);
-  };
-
-  const fetchCategories = () => {
-    setCategories(mockCategories);
+    return categories.find((category) => category.id === id) || null;
   };
 
   const resetFormData = (bookTitle?: BookTitle) => {
@@ -96,9 +89,6 @@ export default function BookTitleDetailForm({
     const selectedAuthor = getAuthor(data.authorId);
     const selectedCategory = getCategory(data.categoryId);
 
-    console.log("Selected Author:", selectedAuthor);
-    console.log("Selected Category:", selectedCategory);
-
     if (!selectedAuthor || !selectedCategory) return;
 
     // Create book object
@@ -116,10 +106,25 @@ export default function BookTitleDetailForm({
     }
   };
 
-  useEffect(() => {
-    fetchAuthors();
-    fetchCategories();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        const resAuthors = GetAllAuthors();
+        const resCategories = GetCategories();
+
+        Promise.all([resAuthors, resCategories])
+          .then(([authorsData, categoriesData]) => {
+            setAuthors(authorsData);
+            setCategories(categoriesData.data);
+          })
+          .catch((error) => {
+            console.error("Error fetching data:", error);
+          });
+      };
+
+      fetchData();
+    }, [])
+  );
 
   useEffect(() => {
     if (bookTitle) resetFormData(bookTitle);
