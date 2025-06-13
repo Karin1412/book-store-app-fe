@@ -7,7 +7,7 @@ export const customerFormConfig = {
     phone: z.string().min(1, "Phone number is required"),
   }),
   defaultValues: {
-    id: undefined,
+    id: "",
     name: "",
     email: "",
     phone: "",

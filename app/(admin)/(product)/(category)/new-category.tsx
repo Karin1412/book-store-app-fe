@@ -1,5 +1,6 @@
 import CategoryDetailForm from "@/components/features/admin/product/category-management/category-form";
 import { ThemedView } from "@/components/ThemedView";
+import { CreateCategory } from "@/services/category";
 import { Category } from "@/types/category";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -9,8 +10,14 @@ export default function NewCategoryScreen() {
   const router = useRouter();
   const handleSubmit = async (category: Category) => {
     console.log("Category submitted:", category);
-    // Implement the submit functionality here
-    router.back();
+    await CreateCategory(category.name)
+      .then((res) => {
+        console.log("Category created:", res);
+        router.back();
+      })
+      .catch((error) => {
+        console.error("Error creating category:", error);
+      });
   };
   return (
     <ThemedView style={styles.container}>

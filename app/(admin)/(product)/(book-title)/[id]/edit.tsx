@@ -1,8 +1,8 @@
 import BookTitleDetailForm from "@/components/features/admin/product/book-title-management/book-title-form";
 import { ThemedView } from "@/components/ThemedView";
-import { mockBookTitles } from "@/mocks/book-title";
+import { GetAllBookTitles } from "@/services/book-title";
 import { BookTitle } from "@/types/book";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect } from "react";
 import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 
@@ -14,15 +14,28 @@ export default function BookTitleEditScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams<Params>();
   const [bookTitle, setBookTitle] = React.useState<BookTitle | null>(null);
+  const [bookTitles, setBookTitles] = React.useState<BookTitle[]>([]);
 
   const fetchData = async (id: string) => {
-    const res = mockBookTitles.find((bookTitle) => bookTitle.id === id);
+    const res = bookTitles.find((bookTitle) => bookTitle.id === id);
     if (res) setBookTitle(res);
   };
 
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        await GetAllBookTitles().then((res) => {
+          setBookTitles(res);
+        });
+      };
+
+      fetchData();
+    }, [])
+  );
+
   useEffect(() => {
     if (id) fetchData(id);
-  }, [id]);
+  }, [id, bookTitles]);
 
   const handleSubmit = async (bookTitle: BookTitle) => {
     console.log("Book submitted:", bookTitle);

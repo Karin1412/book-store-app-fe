@@ -1,16 +1,12 @@
 import PaginationBar from "@/components/common/pagination";
 import SearchInput from "@/components/common/search-input";
-import CategoryItem from "@/components/features/admin/product/category-management/category-item";
 import PublisherItem from "@/components/features/admin/product/publisher-management/publisher-item";
 import { ThemedView } from "@/components/ThemedView";
-import { mockBookTitles } from "@/mocks/book-title";
-import { mockCategories } from "@/mocks/category";
 import { mockPublishers } from "@/mocks/publisher";
-import { BookTitle } from "@/types/book";
-import { Category } from "@/types/category";
+import { GetPublishers } from "@/services/publisher";
 import { Publisher } from "@/types/publisher";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
   FlatList,
@@ -22,7 +18,7 @@ import {
 
 export default function AdminPublisherManagementScreen() {
   const router = useRouter();
-  const [publishers, setPublishers] = useState<Publisher[]>(mockPublishers);
+  const [publishers, setPublishers] = useState<Publisher[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activePage, setActivePage] = useState(1);
   const totalPages = 3;
@@ -37,6 +33,17 @@ export default function AdminPublisherManagementScreen() {
   const handleAddNew = () => {
     router.push("/(admin)/(product)/(publisher)/new-publisher");
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchCategories = async () => {
+        await GetPublishers().then((res) => {
+          setPublishers(res.data);
+        });
+      };
+      fetchCategories();
+    }, [])
+  );
 
   return (
     <SafeAreaView style={styles.themeContainer}>

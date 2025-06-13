@@ -3,8 +3,10 @@ import SearchInput from "@/components/common/search-input";
 import BookItem from "@/components/features/admin/product/book-management/book-item";
 import { ThemedView } from "@/components/ThemedView";
 import { mockBooks } from "@/mocks/book";
+import { GetAllBooks } from "@/services/book";
+import { Book } from "@/types/book";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
   FlatList,
@@ -16,7 +18,7 @@ import {
 
 export default function AdminBookManagementScreen() {
   const router = useRouter();
-  const [books, setBooks] = useState(mockBooks);
+  const [books, setBooks] = useState<Book[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activePage, setActivePage] = useState(1);
   const totalPages = 3;
@@ -35,6 +37,15 @@ export default function AdminBookManagementScreen() {
   const handleAddBook = () => {
     router.push("/(admin)/(product)/(book-management)/new-book");
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        await GetAllBooks().then(setBooks);
+      };
+      fetchData();
+    }, [])
+  );
 
   return (
     <SafeAreaView style={styles.themeContainer}>

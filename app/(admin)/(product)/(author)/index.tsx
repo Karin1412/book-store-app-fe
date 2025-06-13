@@ -2,10 +2,12 @@ import PaginationBar from "@/components/common/pagination";
 import SearchInput from "@/components/common/search-input";
 import AuthorItem from "@/components/features/admin/product/author-management/author-item";
 import { ThemedView } from "@/components/ThemedView";
+import { showErrorMessage } from "@/libs/react-native-toast-message/toast";
 import { mockAuthors } from "@/mocks/author";
+import { GetAllAuthors } from "@/services/author";
 import { Author } from "@/types/author";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
   FlatList,
@@ -17,11 +19,16 @@ import {
 
 export default function AdminAuthorManagementScreen() {
   const router = useRouter();
-  const [authors, setAuthors] = useState<Author[]>(mockAuthors);
+  const [authors, setAuthors] = useState<Author[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activePage, setActivePage] = useState(1);
   const totalPages = 3;
   const handleEdit = (id: string) => {
+    const data = authors.find((author) => author.id === id);
+    if (!data) {
+      showErrorMessage("Author not found");
+      return;
+    }
     router.push(`/(admin)/(product)/(author)/${id}/edit`);
   };
 
@@ -32,6 +39,15 @@ export default function AdminAuthorManagementScreen() {
   const handleAddNew = () => {
     router.push("/(admin)/(product)/(author)/new-author");
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        await GetAllAuthors().then(setAuthors);
+      };
+      fetchData();
+    }, [])
+  );
 
   return (
     <SafeAreaView style={styles.themeContainer}>

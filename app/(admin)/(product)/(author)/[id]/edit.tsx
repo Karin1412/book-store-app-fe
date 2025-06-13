@@ -1,11 +1,13 @@
 import AuthorDetailForm from "@/components/features/admin/product/author-management/author-form";
 import CategoryDetailForm from "@/components/features/admin/product/category-management/category-form";
 import { ThemedView } from "@/components/ThemedView";
+import { showErrorMessage } from "@/libs/react-native-toast-message/toast";
 import { mockAuthors } from "@/mocks/author";
 import { mockCategories } from "@/mocks/category";
+import { GetAllAuthors, UpdateAuthor } from "@/services/author";
 import { Author } from "@/types/author";
 import { Category } from "@/types/category";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect } from "react";
 import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 
@@ -17,20 +19,39 @@ export default function AuthorEditScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams<Params>();
   const [author, setAuthor] = React.useState<Author | null>(null);
+  const [authors, setAuthors] = React.useState<Author[]>([]);
 
   const fetchData = async (id: string) => {
-    const res = mockAuthors.find((author) => author.id === id);
-    if (res) setAuthor(res);
+    const res = authors.find((author) => author.id === id);
+    if (res) {
+      setAuthor(res);
+    }
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        await GetAllAuthors().then(setAuthors);
+      };
+      fetchData();
+    }, [])
+  );
 
   useEffect(() => {
     if (id) fetchData(id);
-  }, [id]);
+  }, [id, authors]);
 
   const handleSubmit = async (author: Author) => {
     console.log("Submitted:", author);
-    // Implement the submit functionality here
-    router.back();
+    await UpdateAuthor(id, author.name)
+      .then(() => {
+        router.back();
+      })
+      .catch((error) => {
+        console.error("Error updating author:", error);
+        // Handle error, e.g., show a toast message
+        showErrorMessage(`Error updating author: ${error.message}`);
+      });
   };
 
   return (

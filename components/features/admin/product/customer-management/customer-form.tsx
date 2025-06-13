@@ -3,7 +3,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { showSuccessMessage } from "@/libs/react-native-toast-message/toast";
-import { Category } from "@/types/category";
+import { Customer } from "@/types/customer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -17,7 +17,6 @@ import {
   ViewStyle,
 } from "react-native";
 import { customerFormConfig } from "./customer-form.config";
-import { Customer } from "@/types/customer";
 
 interface Props {
   customer?: Customer | null;
@@ -66,7 +65,7 @@ export default function CustomerDetailForm({
     };
     if (onSubmit) {
       const res = onSubmit(newCustomer);
-      res.finally(() => showSuccessMessage("Successfully!"));
+      res.then(() => showSuccessMessage("Successfully!"));
     }
   };
 

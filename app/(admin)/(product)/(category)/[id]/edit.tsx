@@ -1,8 +1,10 @@
 import CategoryDetailForm from "@/components/features/admin/product/category-management/category-form";
 import { ThemedView } from "@/components/ThemedView";
+import { showErrorMessage } from "@/libs/react-native-toast-message/toast";
 import { mockCategories } from "@/mocks/category";
+import { GetCategories, UpdateCategory } from "@/services/category";
 import { Category } from "@/types/category";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect } from "react";
 import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 
@@ -14,20 +16,36 @@ export default function CategoryEditScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams<Params>();
   const [category, setCategorie] = React.useState<Category | null>(null);
+  const [categories, setCategories] = React.useState<Category[]>([]);
 
   const fetchData = async (id: string) => {
-    const res = mockCategories.find((category) => category.id === id);
+    const res = categories.find((category) => category.id === id);
     if (res) setCategorie(res);
   };
 
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchCategories = async () => {
+        await GetCategories().then((res) => {
+          setCategories(res.data);
+        });
+      };
+      fetchCategories();
+    }, [])
+  );
+
   useEffect(() => {
     if (id) fetchData(id);
-  }, [id]);
+  }, [id, categories]);
 
   const handleSubmit = async (category: Category) => {
-    console.log("Submitted:", category);
-    // Implement the submit functionality here
-    router.back();
+    await UpdateCategory(id, category.name)
+      .then(() => {
+        router.back();
+      })
+      .catch((error) => {
+        showErrorMessage(`Error updating category ${error.message}`);
+      });
   };
 
   return (

@@ -3,9 +3,10 @@ import SearchInput from "@/components/common/search-input";
 import BookTitleItem from "@/components/features/admin/product/book-title-management/book-title-item";
 import { ThemedView } from "@/components/ThemedView";
 import { mockBookTitles } from "@/mocks/book-title";
+import { GetAllBookTitles } from "@/services/book-title";
 import { BookTitle } from "@/types/book";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
   FlatList,
@@ -17,7 +18,7 @@ import {
 
 export default function AdminBookTitleManagementScreen() {
   const router = useRouter();
-  const [bookTitles, setBookTitles] = useState<BookTitle[]>(mockBookTitles);
+  const [bookTitles, setBookTitles] = useState<BookTitle[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activePage, setActivePage] = useState(1);
   const totalPages = 3;
@@ -36,6 +37,17 @@ export default function AdminBookTitleManagementScreen() {
   const handleAddBookTitle = () => {
     router.push("/(admin)/(product)/(book-title)/new-book-title");
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchCategories = async () => {
+        await GetAllBookTitles().then((res) => {
+          setBookTitles(res);
+        });
+      };
+      fetchCategories();
+    }, [])
+  );
 
   return (
     <SafeAreaView style={styles.themeContainer}>

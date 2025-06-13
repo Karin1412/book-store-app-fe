@@ -3,9 +3,10 @@ import SearchInput from "@/components/common/search-input";
 import PublisherItem from "@/components/features/admin/product/publisher-management/publisher-item";
 import { ThemedView } from "@/components/ThemedView";
 import { mockCustomers } from "@/mocks/customer";
+import { GetCustomers } from "@/services/customer";
 import { Customer } from "@/types/customer";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
   FlatList,
@@ -32,6 +33,15 @@ export default function AdminCustomerManagementScreen() {
   const handleAddNew = () => {
     router.push("/(admin)/(product)/(customer)/new-customer");
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        await GetCustomers().then(setCustomers);
+      };
+      fetchData();
+    }, [])
+  );
 
   return (
     <SafeAreaView style={styles.themeContainer}>
