@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import {
   Text,
   View,
@@ -31,19 +31,27 @@ export default function BookDetail() {
   if (!book) {
     return (
       <ThemedView style={styles.container}>
-        <Text style={{ padding: 20, color: textColor }}>Không tìm thấy sách.</Text>
+        <Text style={{ padding: 20, color: textColor }}>
+          Không tìm thấy sách.
+        </Text>
       </ThemedView>
     );
   }
 
   return (
     <ThemedView style={styles.container}>
-      <ScrollView style={styles.content}>
-        <Image
-          source={{ uri: book.imageUrl }}
-          style={styles.bookImage}
+      <Stack>
+        <Stack.Screen
+          options={{
+            title: book.title.name,
+          }}
         />
-        <Text style={[styles.title, { color: tintColor }]}>{book.title.name}</Text>
+      </Stack>
+      <ScrollView style={styles.content}>
+        <Image source={{ uri: book.imageUrl }} style={styles.bookImage} />
+        <Text style={[styles.title, { color: tintColor }]}>
+          {book.title.name}
+        </Text>
         <Text style={[styles.label, { color: textColor }]}>
           Tác giả: <Text style={styles.value}>{book.title.author.name}</Text>
         </Text>
@@ -54,7 +62,9 @@ export default function BookDetail() {
           Giá: <Text style={styles.value}>${book.unitPrice}</Text>
         </Text>
         <Text style={[styles.label, { color: textColor }]}>Mô tả:</Text>
-        <Text style={[styles.value, { color: textColor }]}>{book.title.description}</Text>
+        <Text style={[styles.value, { color: textColor }]}>
+          {book.title.description}
+        </Text>
 
         <TouchableOpacity
           style={[styles.button, { borderColor: tintColor }]}

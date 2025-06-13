@@ -71,7 +71,13 @@ export default function AdminLayout() {
           name="profile"
           options={{ tabBarLabel: "Profile", headerTitle: "Profile" }}
         />
-        <Tabs.Screen name="(book)/[id]" options={{ href: null }} />
+        <Tabs.Screen
+          name="(book)/[id]"
+          options={{
+            headerShown: false,
+            href: null,
+          }}
+        />
       </Tabs>
     </>
   );
