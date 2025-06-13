@@ -1,50 +1,82 @@
-# Welcome to your Expo app 👋
+# 📱 Expo React Native App Setup Guide
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is a mobile application built using [Expo](https://expo.dev/) and [React Native](https://reactnative.dev/). Follow the instructions below to set up and run the project on your local machine and mobile device.
 
-## Get started
+---
 
-1. Install dependencies
+## ⚙️ Prerequisites
 
-   ```bash
-   npm install
-   ```
+- [Node.js](https://nodejs.org/) installed
+- [Expo CLI](https://docs.expo.dev/get-started/installation/) (if not, install using `npm install -g expo-cli`)
+- A physical phone with Expo Go app installed (iOS/Android)
 
-2. Start the app
+---
 
-   ```bash
-    npx expo start
-   ```
+## 🚀 Setup Instructions
 
-In the output, you'll find options to open the app in a
+### 1. Install Dependencies
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+Run the following command in the project root directory:
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 2. Configure Axios Base URL
 
-## Learn more
+To connect the mobile app with your backend, you need to set your local IP address in the Axios config file.
 
-To learn more about developing your project with Expo, look at the following resources:
+## 🔍 Find Your Local IP Address:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+On Windows:
 
-## Join the community
+```bash
+ipconfig
+```
 
-Join our community of developers creating universal apps.
+Look under your Wi-Fi adapter for the IPv4 Address (e.g., 192.168.1.2).
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## ✏️ Update Axios Config:
+
+Open the Axios configuration file (e.g., src/config/axios.js or similar) and update the baseURL as follows:
+
+```ts
+import axios from "axios";
+
+const Axios = axios.create({
+  baseURL: "http://<YOUR_WIFI_IP_ADDRESS>:8080/v1", // Replace <YOUR_WIFI_IP_ADDRESS> with your actual IP (e.g., 192.168.1.4)
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+  withCredentials: true,
+});
+
+export default Axios;
+```
+
+✅ Replace <YOUR_WIFI_IP_ADDRESS> with the IP address you found in the step above.
+
+### 3. Run the App with Correct Host Binding
+
+Use your IP address as the REACT_NATIVE_PACKAGER_HOSTNAME to allow your mobile device to connect to the development server:
+
+```bash
+REACT_NATIVE_PACKAGER_HOSTNAME=<YOUR_LOCAL_IP> npx expo start
+```
+
+Example:
+
+```bash
+REACT_NATIVE_PACKAGER_HOSTNAME=192.168.1.4 npx expo start
+```
+
+### ⚠️ Important Notes
+
+- Ensure **both your PC and your mobile device are connected to the same Wi-Fi network**.
+
+- If the app fails to load on your device, verify:
+  - Your IP address is correct
+  - Your backend server is running
+  - Your firewall allows local network traffic
+  - Your Expo Go app is up-to-date
