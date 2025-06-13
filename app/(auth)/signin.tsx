@@ -27,17 +27,17 @@ export default function SignInScreen() {
   const handleLogin = async () => {
     await Login(email, password).then(async (res) => {
       const token = res.data.accessToken.token;
-      return await GetProfile(res.data.accessToken.token).then((profile) => {
+      return await GetProfile(token).then((profile) => {
         console.log("profile:", profile);
         const user: User = {
-          id: profile.data.id,
-          name: profile.data.name,
-          email: profile.data.email,
+          id: profile.id,
+          name: profile.name,
+          email: profile.email,
           role: email.includes("admin") ? Role.ADMIN : Role.USER,
-          phone: profile.data.phone,
-          address: profile.data.address,
-          imgUrl: profile.data.img || "",
-          isActive: profile.data.isActive === "true",
+          phone: profile.phone,
+          address: profile.address,
+          imgUrl: profile.imgUrl,
+          isActive: profile.isActive,
           salt: "",
         };
         login(user, token);

@@ -1,4 +1,31 @@
 import Axios from "@/config/axios";
+import { GET } from "./utils";
+import { Role, User } from "@/types/user";
+
+const convertUserResponse = (user: any): User => {
+  // const data = {
+  //   address: "TPHCM",
+  //   email: "admin@gmail.com",
+  //   id: "g3W21A7SR",
+  //   img: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+  //   isActive: true,
+  //   name: "Nguyễn Văn A",
+  //   phone: "1234567890",
+  //   role: { features: [], id: "admin", name: "Admin" },
+  // };
+
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email ?? "",
+    phone: user.phone,
+    address: user.address ?? "",
+    imgUrl: "",
+    role: user.role?.id || Role.USER,
+    isActive: user.isActive ?? true,
+    salt: user.salt ?? "",
+  };
+};
 
 export const Login = (email: string, password: string) => {
   const data = {
@@ -22,12 +49,11 @@ export const Login = (email: string, password: string) => {
     });
 };
 
-export const GetProfile = async (token: string) => {
-  return Axios.get("/profile", {
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  }).then((response) => response.data);
+export const GetProfile = async (token: string = "") => {
+  if (token) {
+    Axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  }
+  return GET("/profile").then((response) => {
+    return convertUserResponse(response.data);
+  });
 };

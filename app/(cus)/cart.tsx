@@ -9,7 +9,6 @@ export default function BorrowedBooksScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <Text style={[styles.header, { color: textColor }]}>Sách đã mượn</Text>
       <FlatList
         data={borrowedBooks}
         keyExtractor={(item) => item.id}

@@ -37,8 +37,8 @@ export default function CustomerHome() {
 
   const textColor = useThemeColor({}, "text");
   const mutedTextColor = useThemeColor({}, "textSecondary");
-  const dotColor = useThemeColor({}, "dot");
-  const activeDotColor = useThemeColor({}, "primary");
+  const tabIconDefaultColor = useThemeColor({}, "tabIconDefault");
+  const tabIconSelectedColor = useThemeColor({}, "tabIconSelected");
   const cardBackground = useThemeColor({}, "cardBackground");
 
   useEffect(() => {
@@ -74,7 +74,9 @@ export default function CustomerHome() {
               styles.dot,
               {
                 backgroundColor:
-                  index === bannerIndex ? activeDotColor : dotColor,
+                  index === bannerIndex
+                    ? tabIconSelectedColor
+                    : tabIconDefaultColor,
               },
             ]}
           />
@@ -97,8 +99,14 @@ export default function CustomerHome() {
             style={[styles.bookCard, { backgroundColor: cardBackground }]}
             onPress={() => router.push(`/(cus)/(book)/${item.id}`)}
           >
-            <Image source={{ uri: item.imageUrl }} style={styles.bookCardImage} />
-            <Text style={[styles.bookCardTitle, { color: textColor }]} numberOfLines={2}>
+            <Image
+              source={{ uri: item.imageUrl }}
+              style={styles.bookCardImage}
+            />
+            <Text
+              style={[styles.bookCardTitle, { color: textColor }]}
+              numberOfLines={2}
+            >
               {item.title.name}
             </Text>
             <Text style={[styles.bookCardAuthor, { color: mutedTextColor }]}>

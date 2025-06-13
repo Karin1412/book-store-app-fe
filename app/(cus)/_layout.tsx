@@ -63,8 +63,15 @@ export default function AdminLayout() {
             headerTitle: "Search",
           }}
         />
-        <Tabs.Screen name="cart" options={{ tabBarLabel: "Cart" }} />
-        <Tabs.Screen name="profile" options={{ tabBarLabel: "Profile" }} />
+        <Tabs.Screen
+          name="cart"
+          options={{ tabBarLabel: "Cart", headerTitle: "Borrowed books" }}
+        />
+        <Tabs.Screen
+          name="profile"
+          options={{ tabBarLabel: "Profile", headerTitle: "Profile" }}
+        />
+        <Tabs.Screen name="(book)/[id]" options={{ href: null }} />
       </Tabs>
     </>
   );

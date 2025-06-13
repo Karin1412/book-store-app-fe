@@ -29,7 +29,7 @@ export default function SearchScreen() {
   const mutedTextColor = useThemeColor({}, "textSecondary");
   const cardBackground = useThemeColor({}, "cardBackground");
   const borderColor = useThemeColor({}, "border");
-  const placeholderColor = useThemeColor({}, "placeholder");
+  const textSecondary = useThemeColor({}, "textSecondary");
 
   const categories = Array.from(
     new Set(mockBooks.map((book) => book.title.category.name))
@@ -55,8 +55,8 @@ export default function SearchScreen() {
     <ThemedView style={styles.container}>
       <TextInput
         style={[styles.input, { borderColor, color: textColor }]}
-        placeholder="Tìm kiếm tên sách hoặc tác giả..."
-        placeholderTextColor={placeholderColor}
+        placeholder="Search books or authors..."
+        placeholderTextColor={textSecondary}
         value={searchText}
         onChangeText={setSearchText}
       />
@@ -64,16 +64,16 @@ export default function SearchScreen() {
       <View style={styles.row}>
         <TextInput
           style={[styles.priceInput, { borderColor, color: textColor }]}
-          placeholder="Giá từ"
-          placeholderTextColor={placeholderColor}
+          placeholder="From"
+          placeholderTextColor={textSecondary}
           keyboardType="numeric"
           value={minPrice}
           onChangeText={setMinPrice}
         />
         <TextInput
           style={[styles.priceInput, { borderColor, color: textColor }]}
-          placeholder="đến"
-          placeholderTextColor={placeholderColor}
+          placeholder="to"
+          placeholderTextColor={textSecondary}
           keyboardType="numeric"
           value={maxPrice}
           onChangeText={setMaxPrice}
@@ -100,11 +100,17 @@ export default function SearchScreen() {
         contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16 }}
         renderItem={({ item }) => (
           <TouchableOpacity
-            style={[styles.card, { backgroundColor: cardBackground, borderColor }]}
+            style={[
+              styles.card,
+              { backgroundColor: cardBackground, borderColor },
+            ]}
             onPress={() => router.push(`/(cus)/(book)/${item.id}`)}
           >
             <Image source={{ uri: item.imageUrl }} style={styles.image} />
-            <Text style={[styles.title, { color: textColor }]} numberOfLines={2}>
+            <Text
+              style={[styles.title, { color: textColor }]}
+              numberOfLines={2}
+            >
               {item.title.name}
             </Text>
             <Text style={[styles.author, { color: mutedTextColor }]}>
@@ -113,7 +119,9 @@ export default function SearchScreen() {
             <Text style={[styles.publisher, { color: mutedTextColor }]}>
               {item.publisher.name}
             </Text>
-            <Text style={[styles.price, { color: textColor }]}>${item.unitPrice}</Text>
+            <Text style={[styles.price, { color: textColor }]}>
+              ${item.unitPrice}
+            </Text>
           </TouchableOpacity>
         )}
         ListEmptyComponent={
