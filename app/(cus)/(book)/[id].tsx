@@ -5,8 +5,11 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
+import { useState } from "react";
 import { mockBooks } from "@/mocks/book";
+import { mockBookPositions } from "@/mocks/bookPosition";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "@/components/ThemedView";
 
@@ -19,11 +22,23 @@ export default function BookDetail() {
   const borderColor = useThemeColor({}, "border");
   const tintColor = useThemeColor({}, "tint");
 
-  if (!book) return <Text style={{ padding: 20, color: textColor }}>Không tìm thấy sách.</Text>;
+  const [showPosition, setShowPosition] = useState(false);
+
+  const position = mockBookPositions.find(
+    (p) => p.bookTitle.id === book?.title.id
+  );
+
+  if (!book) {
+    return (
+      <ThemedView style={styles.container}>
+        <Text style={{ padding: 20, color: textColor }}>Không tìm thấy sách.</Text>
+      </ThemedView>
+    );
+  }
 
   return (
     <ThemedView style={styles.container}>
-      <ScrollView style={[styles.content]}>
+      <ScrollView style={styles.content}>
         <Image
           source={{ uri: book.imageUrl }}
           style={styles.bookImage}
@@ -40,6 +55,32 @@ export default function BookDetail() {
         </Text>
         <Text style={[styles.label, { color: textColor }]}>Mô tả:</Text>
         <Text style={[styles.value, { color: textColor }]}>{book.title.description}</Text>
+
+        <TouchableOpacity
+          style={[styles.button, { borderColor: tintColor }]}
+          onPress={() => setShowPosition(!showPosition)}
+        >
+          <Text style={{ color: tintColor }}>
+            {showPosition ? "Ẩn vị trí sách" : "Xem vị trí sách"}
+          </Text>
+        </TouchableOpacity>
+
+        {showPosition && position && (
+          <View style={[styles.positionBox, { borderColor }]}>
+            <Text style={[styles.positionLabel, { color: textColor }]}>
+              Khu: <Text style={styles.value}>{position.zone}</Text>
+            </Text>
+            <Text style={[styles.positionLabel, { color: textColor }]}>
+              Kệ: <Text style={styles.value}>{position.shelf}</Text>
+            </Text>
+            <Text style={[styles.positionLabel, { color: textColor }]}>
+              Hàng: <Text style={styles.value}>{position.row}</Text>
+            </Text>
+            <Text style={[styles.positionLabel, { color: textColor }]}>
+              Ghi chú: <Text style={styles.value}>{position.note}</Text>
+            </Text>
+          </View>
+        )}
       </ScrollView>
     </ThemedView>
   );
@@ -70,5 +111,23 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 16,
     fontWeight: "400",
+  },
+  button: {
+    marginTop: 20,
+    borderWidth: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  positionBox: {
+    marginTop: 16,
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 12,
+  },
+  positionLabel: {
+    fontSize: 16,
+    marginBottom: 6,
   },
 });
